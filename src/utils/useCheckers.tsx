@@ -1,7 +1,9 @@
-import { useSteps } from "./useSteps.tsx";
+import { useAtom } from "jotai";
+import { makeAtom, modelAtom } from "../store/stepAtoms.ts";
 
 export const useCheckers = () => {
-  const { make, model } = useSteps();
+  const [make] = useAtom(makeAtom);
+  const [model] = useAtom(modelAtom);
 
   const makeCheck = () => {
     return false;
@@ -11,5 +13,11 @@ export const useCheckers = () => {
     return make === "";
   };
 
-  return { makeCheck, modelCheck };
+  const bannedModels = ["kia"];
+
+  const SkipYearIfBanned = () => {
+    return bannedModels.includes(model);
+  };
+
+  return { makeCheck, modelCheck, SkipYearIfBanned };
 };

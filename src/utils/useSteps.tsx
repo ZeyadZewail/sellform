@@ -1,31 +1,56 @@
 import { useCheckers } from "./useCheckers.tsx";
-import { atom, useAtom } from "jotai/index";
+import { useAtom } from "jotai/index";
 import { Step } from "./useStepper.tsx";
+import {
+  kilometerAtom,
+  makeAtom,
+  modelAtom,
+  yearAtom,
+} from "../store/stepAtoms.ts";
+import { Make, Model } from "../types/types.ts";
 
-const makeAtom = atom("");
-const modelAtom = atom("");
 export const useSteps = () => {
-  const { makeCheck, modelCheck } = useCheckers();
+  const { makeCheck, modelCheck, SkipYearIfBanned } = useCheckers();
   const [make, setMake] = useAtom(makeAtom);
   const [model, setModel] = useAtom(modelAtom);
+  const [year, setYear] = useAtom(yearAtom);
+  const [kilometer, setKilometer] = useAtom(kilometerAtom);
 
-  const makeStep: Step<string> = {
+  const makeStep: Step<Make | null> = {
     name: "make",
     value: make,
     setValue: setMake,
     checkSkip: [makeCheck],
-    defaultValue: "",
+    defaultValue: null,
     replaceAllOnNext: false,
   };
 
-  const modelStep: Step<string> = {
+  const modelStep: Step<Model | null> = {
     name: "model",
     value: model,
     setValue: setModel,
     checkSkip: [modelCheck, makeCheck],
-    defaultValue: "",
+    defaultValue: null,
     replaceAllOnNext: true,
   };
 
-  return { make, model, makeStep, modelStep };
+  const yearStep: Step<number | null> = {
+    name: "year",
+    value: year,
+    setValue: setYear,
+    checkSkip: [SkipYearIfBanned],
+    defaultValue: null,
+    replaceAllOnNext: true,
+  };
+
+  const kilometerStep: Step<number | null> = {
+    name: "kilometer",
+    value: kilometer,
+    setValue: setKilometer,
+    checkSkip: [],
+    defaultValue: null,
+    replaceAllOnNext: true,
+  };
+
+  return { makeStep, modelStep, yearStep, kilometerStep };
 };

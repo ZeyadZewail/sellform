@@ -1,8 +1,8 @@
 import { useStepper } from "../utils/useStepper.tsx";
 
 export const InputStep = ({ stepName }: { stepName: string }) => {
-  const { Steps } = useStepper();
-  const myStep = Steps[stepName];
+  const { StepsOrder } = useStepper();
+  const myStep = StepsOrder[stepName];
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
