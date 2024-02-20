@@ -1,8 +1,5 @@
 import { atom, useAtom } from "jotai";
-import { useMakeStep } from "./steps/useMakeStep.tsx";
-import { useModelStep } from "./steps/useModelStep.tsx";
-
-const currentIndexAtom = atom(0);
+import { useSteps } from "./useSteps.tsx";
 
 export interface Step<T> {
   name: string;
@@ -13,10 +10,11 @@ export interface Step<T> {
   replaceAllOnNext: boolean;
 }
 
+const currentIndexAtom = atom(0);
+
 export const useStepper = () => {
-  const { makeStep } = useMakeStep();
-  const { modelStep } = useModelStep();
   const [currentIndex, setCurrentIndexAtom] = useAtom(currentIndexAtom);
+  const { makeStep, modelStep } = useSteps();
 
   const Steps: { [key: string]: Step<string> } = {
     make: makeStep,
@@ -32,7 +30,12 @@ export const useStepper = () => {
 
     const index = arg + 1;
 
-    if (Object.values(Steps)[index].checkSkip()) {
+    if (
+      Object.values(Steps)[index].checkSkip.reduce(
+        (acc, func) => acc && func(),
+        true,
+      )
+    ) {
       Next(index);
     } else {
       setCurrentIndexAtom(index);

@@ -1,7 +1,7 @@
-import { useMakeStep } from "./steps/useMakeStep.tsx";
+import { useSteps } from "./useSteps.tsx";
 
 export const useCheckers = () => {
-  const { make } = useMakeStep();
+  const { make, model } = useSteps();
 
   const makeCheck = () => {
     return false;
