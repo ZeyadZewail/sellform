@@ -7,6 +7,7 @@ import { MobileUIStepper } from "./components/MobileUIStepper.tsx";
 import { useAtom } from "jotai";
 import { makeAtom } from "./store/stepAtoms.ts";
 import { Make } from "./types/types.ts";
+import { Debugger } from "./components/Debugger.tsx";
 
 export const App = () => {
   const [makesData, setMakesData] = useState<Make[]>([]);
@@ -55,5 +56,10 @@ export const App = () => {
     ),
   };
 
-  return <MobileUIStepper UI_steps={mobileUI_steps} />;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <MobileUIStepper UI_steps={mobileUI_steps} />
+      <Debugger />
+    </div>
+  );
 };

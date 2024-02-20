@@ -31,9 +31,16 @@ export const useStepper = () => {
       return;
     }
 
+    const steps = Object.values(StepsOrder);
+    const currentStep = steps[currentIndex];
+
+    if (!currentStep.value || currentStep.value === currentStep.defaultValue) {
+      return;
+    }
+
     const index = arg + 1;
 
-    const step = Object.values(StepsOrder)[index];
+    const step = steps[index];
 
     if (
       step.checkSkipArray.reduce(

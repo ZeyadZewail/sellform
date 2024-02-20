@@ -10,7 +10,7 @@ import {
 import { Make, Model } from "../types/types.ts";
 
 export const useSteps = () => {
-  const { makeCheck, modelCheck, SkipYearIfBanned } = useCheckers();
+  const { SkipYearIfBanned } = useCheckers();
   const [make, setMake] = useAtom(makeAtom);
   const [model, setModel] = useAtom(modelAtom);
   const [year, setYear] = useAtom(yearAtom);
@@ -20,7 +20,7 @@ export const useSteps = () => {
     name: "make",
     value: make,
     setValue: setMake,
-    checkSkipArray: [makeCheck],
+    checkSkipArray: [],
     defaultValue: null,
     replaceAllOnNext: true,
   };
@@ -29,7 +29,7 @@ export const useSteps = () => {
     name: "model",
     value: model,
     setValue: setModel,
-    checkSkipArray: [modelCheck, makeCheck],
+    checkSkipArray: [],
     defaultValue: null,
     replaceAllOnNext: false,
   };

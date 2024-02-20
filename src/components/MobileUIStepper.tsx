@@ -49,8 +49,6 @@ export const MobileUIStepper = ({
       >
         Next
       </button>
-
-      <div>{`Current Index: ${currentIndex}`}</div>
     </div>
   );
 };
