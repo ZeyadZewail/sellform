@@ -5,7 +5,7 @@ export interface Step<T> {
   name: string;
   value: T;
   setValue: (arg: T) => void;
-  checkSkip: (() => boolean)[];
+  checkSkipArray: (() => boolean)[];
   defaultValue: T;
   replaceAllOnNext: boolean;
 }
@@ -33,15 +33,26 @@ export const useStepper = () => {
 
     const index = arg + 1;
 
+    const step = Object.values(StepsOrder)[index];
+
     if (
-      Object.values(StepsOrder)[index].checkSkip.reduce(
+      step.checkSkipArray.reduce(
         (acc, func) => acc && func(),
-        Object.values(StepsOrder)[index].checkSkip.length > 0,
+        step.checkSkipArray.length > 0,
       )
     ) {
       Next(index);
     } else {
+      clearAllAfterStep(index);
       setCurrentIndexAtom(index);
+    }
+  };
+
+  const clearAllAfterStep = (index: number) => {
+    const steps = Object.values(StepsOrder);
+
+    for (let i = index; i < steps.length; i++) {
+      steps[i].setValue(steps[i].defaultValue);
     }
   };
 
@@ -54,12 +65,9 @@ export const useStepper = () => {
 
     const index = arg - 1;
 
-    if (
-      Object.values(StepsOrder)[index].checkSkip.reduce(
-        (acc, func) => acc && func(),
-        Object.values(StepsOrder)[index].checkSkip.length > 0,
-      )
-    ) {
+    const step = Object.values(StepsOrder)[index];
+
+    if (reduceCheckSkip(step.checkSkipArray) || !step.replaceAllOnNext) {
       Back(index);
     } else {
       setCurrentIndexAtom(index);
@@ -67,4 +75,15 @@ export const useStepper = () => {
   };
 
   return { StepsOrder, currentIndex, Next, Back };
+};
+
+export const reduceCheckSkip = (checkSkipArray: (() => boolean)[]) => {
+  if (checkSkipArray.length === 0) {
+    return false;
+  }
+
+  return checkSkipArray.reduce(
+    (acc, func) => acc && func(),
+    checkSkipArray.length > 0,
+  );
 };

@@ -10,13 +10,13 @@ export const useCheckers = () => {
   };
 
   const modelCheck = () => {
-    return make === "";
+    return make !== null;
   };
 
-  const bannedModels = ["kia"];
+  const bannedModels = ["Austin", "A3"];
 
   const SkipYearIfBanned = () => {
-    return bannedModels.includes(model);
+    return !!model && bannedModels.includes(model.name);
   };
 
   return { makeCheck, modelCheck, SkipYearIfBanned };

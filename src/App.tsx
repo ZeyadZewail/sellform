@@ -3,9 +3,9 @@ import { ReactNode, useEffect, useState } from "react";
 import { InputStep } from "./components/InputStep.tsx";
 import axios from "axios";
 import { DropDownStep } from "./components/DropDownStep.tsx";
-import { Stepper } from "./components/Stepper.tsx";
+import { MobileUIStepper } from "./components/MobileUIStepper.tsx";
 import { useAtom } from "jotai";
-import { makeAtom, modelAtom } from "./store/stepAtoms.ts";
+import { makeAtom } from "./store/stepAtoms.ts";
 import { Make } from "./types/types.ts";
 
 export const App = () => {
@@ -14,7 +14,6 @@ export const App = () => {
   const [modelsData, setModelsData] = useState([]);
 
   const [make] = useAtom(makeAtom);
-  const [model] = useAtom(modelAtom);
 
   useEffect(() => {
     axios
@@ -47,28 +46,14 @@ export const App = () => {
     }
   }, [make]);
 
-  const UI_steps: { [key: string]: ReactNode } = {
+  const mobileUI_steps: { [key: string]: ReactNode } = {
+    year: <InputStep stepName={"year"} key={"year"} />,
+    kilometer: <InputStep stepName={"kilometer"} key={"kilometer"} />,
     make: <DropDownStep options={makesData} stepName={"make"} key={"make"} />,
     model: (
       <DropDownStep options={modelsData} stepName={"model"} key={"model"} />
     ),
-    year: (
-      <DropDownStep
-        options={
-          // model && model.years
-          //   ? model.years.map((year) => ({ id: year, name: year }))
-          //   : []
-          [
-            { name: "123", id: "123" },
-            { name: "234", id: "234" },
-          ]
-        }
-        stepName={"year"}
-        key={"year"}
-      />
-    ),
-    kilometer: <InputStep stepName={"kilometer"} key={"kilometer"} />,
   };
 
-  return <Stepper UI_steps={UI_steps} />;
+  return <MobileUIStepper UI_steps={mobileUI_steps} />;
 };

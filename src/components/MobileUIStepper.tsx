@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
-import { useStepper } from "../utils/useStepper.tsx";
+import { reduceCheckSkip, useStepper } from "../utils/useStepper.tsx";
 
-export const Stepper = ({
+export const MobileUIStepper = ({
   UI_steps,
 }: {
   UI_steps: { [key: string]: ReactNode };
@@ -15,7 +15,9 @@ export const Stepper = ({
     const keys = Object.keys(StepsOrder);
 
     for (let i = currentIndex; i >= 0; i--) {
-      elements.unshift(UI_steps[keys[i]]);
+      if (!reduceCheckSkip(values[i].checkSkipArray)) {
+        elements.unshift(UI_steps[keys[i]]);
+      }
 
       if (i !== 0 && values[i - 1].replaceAllOnNext) {
         break;

@@ -20,34 +20,34 @@ export const useSteps = () => {
     name: "make",
     value: make,
     setValue: setMake,
-    checkSkip: [makeCheck],
+    checkSkipArray: [makeCheck],
     defaultValue: null,
-    replaceAllOnNext: false,
+    replaceAllOnNext: true,
   };
 
   const modelStep: Step<Model | null> = {
     name: "model",
     value: model,
     setValue: setModel,
-    checkSkip: [modelCheck, makeCheck],
+    checkSkipArray: [modelCheck, makeCheck],
     defaultValue: null,
-    replaceAllOnNext: true,
+    replaceAllOnNext: false,
   };
 
   const yearStep: Step<number | null> = {
     name: "year",
     value: year,
     setValue: setYear,
-    checkSkip: [SkipYearIfBanned],
+    checkSkipArray: [SkipYearIfBanned],
     defaultValue: null,
-    replaceAllOnNext: true,
+    replaceAllOnNext: false,
   };
 
   const kilometerStep: Step<number | null> = {
     name: "kilometer",
     value: kilometer,
     setValue: setKilometer,
-    checkSkip: [],
+    checkSkipArray: [],
     defaultValue: null,
     replaceAllOnNext: true,
   };
