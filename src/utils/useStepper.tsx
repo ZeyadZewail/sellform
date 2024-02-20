@@ -1,7 +1,17 @@
 import { atom, useAtom } from "jotai";
-import { Step, useMakeStep, useModelStep } from "./Steps.ts";
+import { useMakeStep } from "./steps/useMakeStep.tsx";
+import { useModelStep } from "./steps/useModelStep.tsx";
 
 const currentIndexAtom = atom(0);
+
+export interface Step<T> {
+  name: string;
+  value: T;
+  setValue: (arg: T) => void;
+  checkSkip: (() => boolean)[];
+  defaultValue: T;
+  replaceAllOnNext: boolean;
+}
 
 export const useStepper = () => {
   const { makeStep } = useMakeStep();
